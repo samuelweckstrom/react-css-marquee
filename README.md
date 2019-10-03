@@ -24,17 +24,17 @@ import Marquee from 'react-css-marquee
 
 ...
 
-<Marquee text="WASSUP" />
+<Marquee text="Your scrolling text here..." />
 ```
 
 ### Styling
 
-You can add your own styles by either passing them with the `styles` prop for inline styles, or you can use the CSS classes `react-marquee__wrapper` 
+You can add your own styles by either passing them with the `styles` prop for inline styles, or you can use the CSS classes `react-marquee__container` 
 and `react-marquee__text`.
 
 ### Props
   * `text`: {string}
-  * `direction`: {string} 'left' || 'right'
+  * `direction`: {string} left | right
   * `spacing`: {number} how much space between `text` strings
   * `size`: {number} text size
   * `styles`: {object} will be applied as inline styles to the text
