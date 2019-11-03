@@ -1,0 +1,11 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "demo/package.json",
+        "package.json",
+        "react-css-marquee/package.json"
+      ]
+    }
+  }
+}
