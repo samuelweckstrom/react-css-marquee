@@ -1,6 +1,6 @@
 # React CSS Marquee
 
-[![Build Status](https://travis-ci.org/samuelweckstrom/react-css-marquee.svg?branch=master)](https://travis-ci.org/samuelweckstrom/react-css-marquee)
+[![Build Status](https://travis-ci.org/samuelweckstrom/react-css-marquee.svg?branch=master)](https://travis-ci.org/samuelweckstrom/react-css-marquee) [![Greenkeeper badge](https://badges.greenkeeper.io/samuelweckstrom/react-css-marquee.svg)](https://greenkeeper.io/)
 
 Bringing back that sweet scrolling [HTML Marquee element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). In React and uses CSS @keyframes for animations. Uses hooks to detect window size so React > 16.8. Includes type definitions for TypeScript.
 
