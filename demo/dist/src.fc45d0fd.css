@@ -9,22 +9,19 @@ body {
   width: 100vw;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  overflow: hidden;
 }
 .wrapper-horizontal {
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
-  overflow: hidden;
+  justify-content: space-around;
 }
 
 .horizontal-marquee {
   width: 100%;
-  height: 25%;
 }
 
 .vertical-marquee {
