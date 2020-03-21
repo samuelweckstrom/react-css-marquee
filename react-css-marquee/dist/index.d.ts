@@ -8,6 +8,7 @@ interface MarqueeProps {
     size?: number;
     flip?: boolean;
     orientation?: string;
+    namespace?: string;
 }
 declare const useWindowSize: () => {
     [T: string]: number;
