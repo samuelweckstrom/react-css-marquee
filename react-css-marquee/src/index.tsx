@@ -96,7 +96,7 @@ const Marquee: React.SFC<MarqueeProps> = ({
         }}
       >
         <div
-          className={`${namespace}__container-${hash}`}
+          className={`react-marquee__container ${namespace}__container-${hash}`}
           style={{
             display: 'flex',
             flexFlow: 'row nowrap',
@@ -108,7 +108,7 @@ const Marquee: React.SFC<MarqueeProps> = ({
           }}
         >
           <div
-            className={`${namespace}__text-${hash}`}
+            className={`react-marquee__text ${namespace}__text-${hash}`}
             style={{
               alignSelf: 'center',
               textRendering: 'optimizeLegibility',
@@ -125,7 +125,7 @@ const Marquee: React.SFC<MarqueeProps> = ({
             {textWithSpaces}
           </div>
           <div
-            className={`${namespace}__text-${hash}`}
+            className={`react-marquee__text ${namespace}__text-${hash}`}
             style={{
               alignSelf: 'center',
               textRendering: 'optimizeLegibility',
