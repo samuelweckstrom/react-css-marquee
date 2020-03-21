@@ -1,5 +1,8 @@
 # React CSS Marquee
 
+[Demo](http://react-css-marquee.surge.sh/)
+
+
 [![Build Status](https://travis-ci.org/samuelweckstrom/react-css-marquee.svg?branch=master)](https://travis-ci.org/samuelweckstrom/react-css-marquee)
 [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
