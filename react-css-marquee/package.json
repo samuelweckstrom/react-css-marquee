@@ -1,11 +1,14 @@
 {
   "name": "react-css-marquee",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "The classic <marquee> in React and CSS",
   "url": "https://github.com/samuelweckstrom/react-css-marquee",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "start": "tsc -w",
     "build": "tsc -b"
