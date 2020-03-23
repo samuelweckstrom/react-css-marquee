@@ -1,10 +1,19 @@
 {
   "name": "react-css-marquee",
-  "version": "0.0.7",
   "description": "The classic <marquee> in React and CSS",
-  "url": "https://github.com/samuelweckstrom/react-css-marquee",
+  "version": "0.0.7",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "url": "https://github.com/samuelweckstrom/react-css-marquee",
+  "license": "MIT",
+  "keywords": [
+    "marquee",
+    "ticker",
+    "scroller",
+    "react",
+    "css",
+    "keyframe"
+  ],
   "files": [
     "dist",
     "README.md"
