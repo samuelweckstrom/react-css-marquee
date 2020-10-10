@@ -36,6 +36,7 @@
   ],
   "exclude": [
     "node_modules",
-    "__tests__"
+    "dist",
+    "src/__tests__"
   ]
 }
