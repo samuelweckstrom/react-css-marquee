@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface MarqueeProps {
+type MarqueeProps = {
   text: string;
   speed?: number;
   styles?: object;
@@ -10,7 +10,7 @@ interface MarqueeProps {
   flip?: boolean;
   orientation?: string;
   namespace?: string;
-}
+};
 
 const createHash = () =>
   Math.random()
