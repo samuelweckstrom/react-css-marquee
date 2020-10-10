@@ -13,6 +13,8 @@ type MarqueeProps = {
   disableDefaultStyles?: boolean;
 };
 
+const createHash = () => Math.random().toString(36).substring(7);
+
 const useWindowSize = (): { [T: string]: number } => {
   const getSize = (): { [T: string]: number } => ({
     width: window.innerWidth,
@@ -70,6 +72,7 @@ const Marquee = ({
     orientation === 'vertical' ? 'right top' : 'top left';
   const setItemWidth = orientation === 'vertical' ? height : width;
   const setItemHeight = orientation === 'vertical' ? width : height;
+  const hash: string = React.useMemo(createHash, []);
   return (
     <div ref={ref}>
       <style>
@@ -79,6 +82,20 @@ const Marquee = ({
               transform: translate3d(-100%, 0, 0);
             }
           }
+          .${namespace}__wrapper-${hash} {
+            font-size: 16px;
+            transform: ${setWrapperTransform};
+          }
+          .${namespace}__text-${hash} {
+              align-self: center;
+              text-rendering: optimizeLegibility;
+              transform: translateZ(0);
+              animation: ${namespace}__animation linear infinite;
+              animation-direction: ${setDirection};
+              animation-duration: ${setSpeed}s;
+          }
+        `}
+      </style>
       {!disableDefaultStyles && (
         <style>
           {`
@@ -89,18 +106,10 @@ const Marquee = ({
             .${namespace}__text-${hash} {
               font-size: ${size}em;
             }
-        `}
-      </style>
+          `}
+        </style>
       )}
-      <div
-        className={`${namespace}__wrapper`}
-        style={{
-          fontSize: '16px',
-          width: setItemWidth + 'px',
-          height: setItemHeight + 'px',
-          transform: setWrapperTransform,
-        }}
-      >
+      <div className={`${namespace}__wrapper ${namespace}__wrapper-${hash}`}>
         <div
           className={`${namespace}__container`}
           style={{
@@ -114,30 +123,18 @@ const Marquee = ({
           }}
         >
           <div
-            className={`${namespace}__text`}
+            className={`${namespace}__text ${namespace}__text-${hash}`}
             style={{
-              alignSelf: 'center',
-              textRendering: 'optimizeLegibility',
-              transform: 'translateZ(0)',
               whiteSpace: 'pre',
-              animation: `${namespace}__animation linear infinite`,
-              animationDirection: setDirection,
-              animationDuration: setSpeed + 's',
               ...styles,
             }}
           >
             {textWithSpaces}
           </div>
           <div
-            className={`${namespace}__text`}
+            className={`${namespace}__text ${namespace}__text-${hash}`}
             style={{
-              alignSelf: 'center',
-              textRendering: 'optimizeLegibility',
-              transform: 'translateZ(0)',
               whiteSpace: 'pre',
-              animation: `${namespace}__animation linear infinite`,
-              animationDirection: setDirection,
-              animationDuration: setSpeed + 's',
               ...styles,
             }}
           >
