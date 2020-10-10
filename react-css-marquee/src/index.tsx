@@ -12,11 +12,6 @@ type MarqueeProps = {
   namespace?: string;
 };
 
-const createHash = () =>
-  Math.random()
-    .toString(36)
-    .substring(7);
-
 const useWindowSize = (): { [T: string]: number } => {
   const getSize = (): { [T: string]: number } => ({
     width: window.innerWidth,
@@ -74,12 +69,11 @@ const Marquee: React.SFC<MarqueeProps> = ({
     orientation === 'vertical' ? 'right top' : 'top left';
   const setItemWidth = orientation === 'vertical' ? height : width;
   const setItemHeight = orientation === 'vertical' ? width : height;
-  const hash: string = React.useMemo(createHash, []);
   return (
     <div ref={reactRef}>
       <style>
         {`
-          @keyframes ${namespace}__animation-${hash} {
+          @keyframes ${namespace}__animation {
             100% {
               transform: translate3d(-100%, 0, 0);
             }
@@ -87,7 +81,7 @@ const Marquee: React.SFC<MarqueeProps> = ({
         `}
       </style>
       <div
-        className={`${namespace}__wrapper-${hash}`}
+        className={`${namespace}__wrapper`}
         style={{
           fontSize: '16px',
           width: setItemWidth + 'px',
@@ -96,7 +90,7 @@ const Marquee: React.SFC<MarqueeProps> = ({
         }}
       >
         <div
-          className={`react-marquee__container ${namespace}__container-${hash}`}
+          className={`${namespace}__container`}
           style={{
             display: 'flex',
             flexFlow: 'row nowrap',
@@ -108,15 +102,13 @@ const Marquee: React.SFC<MarqueeProps> = ({
           }}
         >
           <div
-            className={`react-marquee__text ${namespace}__text-${hash}`}
+            className={`${namespace}__text`}
             style={{
               alignSelf: 'center',
               textRendering: 'optimizeLegibility',
               transform: 'translateZ(0)',
               whiteSpace: 'pre',
-              fontSize: size + 'em',
-              animation:
-                namespace + '__animation-' + hash + ' linear' + ' infinite',
+              animation: `${namespace}__animation linear infinite`,
               animationDirection: setDirection,
               animationDuration: setSpeed + 's',
               ...styles,
@@ -125,15 +117,13 @@ const Marquee: React.SFC<MarqueeProps> = ({
             {textWithSpaces}
           </div>
           <div
-            className={`react-marquee__text ${namespace}__text-${hash}`}
+            className={`${namespace}__text`}
             style={{
               alignSelf: 'center',
               textRendering: 'optimizeLegibility',
               transform: 'translateZ(0)',
               whiteSpace: 'pre',
-              fontSize: size + 'em',
-              animation:
-                namespace + '__animation-' + hash + ' linear' + ' infinite',
+              animation: `${namespace}__animation linear infinite`,
               animationDirection: setDirection,
               animationDuration: setSpeed + 's',
               ...styles,
