@@ -1,8 +1,8 @@
 {
   "private": true,
   "workspaces": [
-    "react-css-marquee",
-    "demo"
+    "demo",
+    "react-css-marquee"
   ],
   "scripts": {
     "test": "jest",
