@@ -4,18 +4,19 @@ body {
   height: 100vh;
 }
 
-.wrapper-vertical {
+.horizontal-wrapper,
+.vertical-wrapper {
   height: 100vh;
   width: 100vw;
   display: flex;
+}
+
+.vertical-wrapper {
   flex-flow: row nowrap;
   justify-content: space-around;
   align-items: center;
 }
-.wrapper-horizontal {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
+.horizontal-wrapper {
   flex-flow: column nowrap;
   justify-content: space-around;
 }
@@ -29,4 +30,14 @@ body {
   margin: auto;
   width: 25%;
   height: 100%;
+}
+
+.disable-default-wrapper {
+  height: auto;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.horizontal-marquee-disable-default__text {
+  font-size: 2em;
 }
