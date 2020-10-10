@@ -20,9 +20,9 @@ describe('<Marquee />', () => {
     expect(actual).toEqual(expected);
   });
 
-  it('should contain a <style>', () => {
+  it('should contain 2x <style>', () => {
     const actual = wrapper.find('style').length;
-    const expected = 1;
+    const expected = 2;
     expect(actual).toEqual(expected);
   });
 
