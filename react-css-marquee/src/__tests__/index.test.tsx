@@ -45,8 +45,8 @@ describe('<Marquee />', () => {
   it('should generate a unique className for 2x text <div>', () => {
     const match = "[className*='rm-text__']";
     const regex = /rm-text__[a-zA-Z0-9.-]+$/;
-    const divs = wrapper.find(match).map(x => x);
-    const actual = divs.every(div => {
+    const divs = wrapper.find(match).map((x) => x);
+    const actual = divs.every((div) => {
       const className = div.prop('className') || '';
       return regex.test(className);
     });
@@ -61,8 +61,8 @@ describe('<Marquee />', () => {
         border,
       },
     });
-    const divs = wrapper.find('div.react-marquee__text').map(x => x);
-    const actual = divs.every(div => {
+    const divs = wrapper.find('div.react-marquee__text').map((x) => x);
+    const actual = divs.every((div) => {
       const style = div.prop('style') || '';
       return style && { border };
     });
@@ -73,13 +73,11 @@ describe('<Marquee />', () => {
 
 describe('useWindowSize', () => {
   it('should return window size', () => {
-    interface HookWrapperProps {
+    type HookWrapperProps = {
       'data-hook'?: string;
       hook: () => object;
-    }
-    const HookWrapper: React.SFC<HookWrapperProps> = ({
-      hook,
-    }): React.ReactElement => {
+    };
+    const HookWrapper = ({ hook }: HookWrapperProps) => {
       const setHook = hook && hook();
       return <div data-hook={setHook} />;
     };
