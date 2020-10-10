@@ -26,7 +26,7 @@ const useWindowSize = (): { [T: string]: number } => {
   return windowSize;
 };
 
-const Marquee: React.SFC<MarqueeProps> = ({
+const Marquee = ({
   text = 'REACT MARQUEE',
   direction = 'left',
   spacing = 4,
@@ -35,8 +35,7 @@ const Marquee: React.SFC<MarqueeProps> = ({
   speed = 5,
   namespace = 'react-marquee',
   orientation = 'horizontal',
-}): React.ReactElement => {
-  console.log('<Marquee />', { namespace });
+}: MarqueeProps): JSX.Element => {
   const [height, setHeight] = React.useState(0);
   const [width, setWidth] = React.useState(0);
   const windowSize = useWindowSize();
