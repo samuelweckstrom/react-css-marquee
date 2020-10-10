@@ -1,6 +1,6 @@
 # React CSS Marquee
 
-[Demo](http://react-css-marquee.surge.sh/)
+[Demo](https://codesandbox.io/s/react-css-marquee-demo-577f1)
 
 
 [![Build Status](https://travis-ci.org/samuelweckstrom/react-css-marquee.svg?branch=master)](https://travis-ci.org/samuelweckstrom/react-css-marquee)
