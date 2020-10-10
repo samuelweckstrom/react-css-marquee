@@ -45,3 +45,4 @@ Pass inline styles with the `styles` prop or use the CSS default classes `react-
 | `styles: object`  | Inline CSS  |
 | `speed: number`  | 5  |
 |`namespace: string`| Pass own CSS namespace|
+|`disableDefaultStyles: boolean`| Disable default styling
