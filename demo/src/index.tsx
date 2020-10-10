@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Marquee from 'react-css-marquee';
 import './styles.css';
 
-const App: React.SFC = (): React.ReactElement => {
+const App = (): JSX.Element => {
   return (
     <div>
       <div className="wrapper-vertical">
