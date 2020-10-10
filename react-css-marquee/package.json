@@ -1,7 +1,7 @@
 {
   "name": "react-css-marquee",
   "description": "The classic <marquee> in React and CSS",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "url": "https://github.com/samuelweckstrom/react-css-marquee",
