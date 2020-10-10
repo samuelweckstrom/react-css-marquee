@@ -10,6 +10,7 @@ type MarqueeProps = {
   flip?: boolean;
   orientation?: string;
   namespace?: string;
+  disableDefaultStyles?: boolean;
 };
 
 const useWindowSize = (): { [T: string]: number } => {
@@ -33,6 +34,7 @@ const Marquee = ({
   size = 3,
   styles,
   speed = 5,
+  disableDefaultStyles = false,
   namespace = 'react-marquee',
   orientation = 'horizontal',
 }: MarqueeProps): JSX.Element => {
@@ -77,8 +79,19 @@ const Marquee = ({
               transform: translate3d(-100%, 0, 0);
             }
           }
+      {!disableDefaultStyles && (
+        <style>
+          {`
+            .${namespace}__wrapper {
+              width: ${setItemWidth}px;
+              height: ${setItemHeight}px;
+            }
+            .${namespace}__text-${hash} {
+              font-size: ${size}em;
+            }
         `}
       </style>
+      )}
       <div
         className={`${namespace}__wrapper`}
         style={{
