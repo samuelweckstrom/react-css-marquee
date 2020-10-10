@@ -6,23 +6,24 @@ import './styles.css';
 const App = (): JSX.Element => {
   return (
     <div>
-      <div className="wrapper-vertical">
-        <div className="vertical-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="vertical-marquee"
-            speed={15}
-            size={5}
-            direction="right"
-            orientation="vertical"
-          />
-        </div>
+      <div className="disable-default-wrapper">
+        <Marquee
+          text="REACT CSS MARQUEE"
+          namespace="horizontal-marquee-disable-default"
+          speed={4}
+          direction="right"
+          orientation="horizontal"
+          disableDefaultStyles
+        />
+      </div>
+
+      <div className="vertical-wrapper">
         <div className="vertical-marquee">
           <Marquee
             text="REACT CSS MARQUEE"
             namespace="vertical-marquee"
             speed={5}
-            size={2}
+            size={5}
             direction="right"
             orientation="vertical"
           />
@@ -48,7 +49,7 @@ const App = (): JSX.Element => {
           />
         </div>
       </div>
-      <div className="wrapper-horizontal">
+      <div className="horizontal-wrapper">
         <div className="horizontal-marquee">
           <Marquee
             text="REACT CSS MARQUEE"
