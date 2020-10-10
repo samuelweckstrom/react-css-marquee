@@ -41,9 +41,9 @@ const Marquee = ({
   const [height, setHeight] = React.useState(0);
   const [width, setWidth] = React.useState(0);
   const windowSize = useWindowSize();
-  const reactRef = React.useCallback(
-    node => {
-      if (node !== null) {
+  const ref = React.useCallback(
+    (node) => {
+      if (node) {
         setHeight(node.parentNode.getBoundingClientRect().height);
         setWidth(node.parentNode.getBoundingClientRect().width);
       }
@@ -71,7 +71,7 @@ const Marquee = ({
   const setItemWidth = orientation === 'vertical' ? height : width;
   const setItemHeight = orientation === 'vertical' ? width : height;
   return (
-    <div ref={reactRef}>
+    <div ref={ref}>
       <style>
         {`
           @keyframes ${namespace}__animation {
