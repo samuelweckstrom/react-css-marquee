@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { shallow } from 'enzyme';
 import Marquee, { useWindowSize } from '..';
 
-describe('<Marquee />', () => {
+describe('React CSS Marquee', () => {
   const props = {
     text: 'test-text',
-    namespace: 'test',
+    cssNamespace: 'test',
   };
   const wrapper = shallow(<Marquee {...props} />);
 
@@ -13,32 +13,23 @@ describe('<Marquee />', () => {
     expect(wrapper).toBeDefined();
   });
 
-  it('should pass namespace from props to className', () => {
-    const match = `[className*='${props.namespace}__wrapper-']`;
+  it('should pass CSS namespace', () => {
+    const match = `[className*='${props.cssNamespace}__container-']`;
     const actual = wrapper.find(match).length;
     const expected = 1;
     expect(actual).toEqual(expected);
   });
 
-  it('should contain 2x <style>', () => {
+  it('should have default styling', () => {
     const actual = wrapper.find('style').length;
-    const expected = 2;
+    const expected = 1;
     expect(actual).toEqual(expected);
   });
 
-  it('should contain 2x text <div>', () => {
-    const match = `[className*='${props.namespace}__text-']`;
+  it('should display text', () => {
+    const match = `[className*='${props.cssNamespace}__text-']`;
     const actual = wrapper.find(match).length;
     const expected = 2;
-    expect(actual).toEqual(expected);
-  });
-
-  it('should generate a unique className for wrapper <div>', () => {
-    const match = `[className*='${props.namespace}__wrapper-']`;
-    const regex = /([a-z])__wrapper-[a-zA-Z0-9.-]+$/;
-    const { className = '' } = wrapper.find(match).props();
-    const actual = regex.test(className);
-    const expected = true;
     expect(actual).toEqual(expected);
   });
 
@@ -49,22 +40,6 @@ describe('<Marquee />', () => {
     const actual = divs.every((div) => {
       const className = div.prop('className') || '';
       return regex.test(className);
-    });
-    const expected = true;
-    expect(actual).toEqual(expected);
-  });
-
-  it('should pass styles from props to 2x text <div>', () => {
-    const border = '10px solid gold';
-    wrapper.setProps({
-      styles: {
-        border,
-      },
-    });
-    const divs = wrapper.find('div.react-marquee__text').map((x) => x);
-    const actual = divs.every((div) => {
-      const style = div.prop('style') || '';
-      return style && { border };
     });
     const expected = true;
     expect(actual).toEqual(expected);

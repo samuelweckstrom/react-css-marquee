@@ -1,18 +1,16 @@
-import React from 'react';
-interface MarqueeProps {
-    text: string;
-    speed?: number;
-    styles?: object;
-    direction?: string;
-    spacing?: number;
-    size?: number;
-    flip?: boolean;
-    orientation?: string;
-    namespace?: string;
-}
-declare const useWindowSize: () => {
+export declare const useWindowSize: () => {
     [T: string]: number;
 };
-declare const Marquee: React.SFC<MarqueeProps>;
-export { useWindowSize };
+declare type MarqueeProps = {
+    text: string;
+    cssNamespace?: string;
+    flip?: boolean;
+    hoverStop?: boolean;
+    reverse?: boolean;
+    size?: number;
+    spacing?: number;
+    speed?: number;
+    vertical?: boolean;
+};
+declare const Marquee: (props: MarqueeProps) => JSX.Element;
 export default Marquee;

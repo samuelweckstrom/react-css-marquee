@@ -6,10 +6,10 @@
 [![Build Status](https://travis-ci.org/samuelweckstrom/react-css-marquee.svg?branch=master)](https://travis-ci.org/samuelweckstrom/react-css-marquee)
 [![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 
-Bringing back that sweet scrolling [HTML Marquee element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). In React with CSS @keyframes for animations. Uses hooks to detect window size so React >16.8.
+React marquee component for horizontal and vertical scrolling text (see demo link above for example use cases).
 
 <div align="center">
-  <img style="width: 40%" src="https://s3.eu-central-1.amazonaws.com/samuel.weckstrom.xyz/github/marquee.gif">
+  <img style="width: 200px" src="https://s3.eu-central-1.amazonaws.com/samuel.weckstrom.xyz/github/marquee.gif">
 </div>
 
 
@@ -33,16 +33,36 @@ import Marquee from 'react-css-marquee'
 
 ### Styling
 
-Pass inline styles with the `styles` prop or use the CSS default classes `react-marquee__container` and `react-marquee__text`. You can also pass your own CSS namespace.
+|Default CSS-classes|
+| ------------- |
+|`react-css-marquee__container`|
+|`react-css-marquee__text`|
+
+<br>
+You can style the components using the default CSS-classes. If you prefer you can also pass your own namespace for CSS classes via props ie. `my-marquee-namespace__container`.
+<br>
+
 
 ### Props
 
-| Prop  | Example |
-| ------------- | ------------- |
-| `text: string`  | Your marquee text |
-|`direction: string` |  left \| right |
-| `size: number`  | 200  |
-| `styles: object`  | Inline CSS  |
-| `speed: number`  | 5  |
-|`namespace: string`| Pass own CSS namespace|
-|`disableDefaultStyles: boolean`| Disable default styling
+||
+| ------------- |
+|`text: string`|
+|`cssNamespace?: string`|
+|`flip?: boolean`|
+|`hoverStop?: boolean`|
+|`reverse?: boolean`|
+|`size?: number`|
+|`spacing?: number`|
+|`speed?: number`|
+|`vertical?: boolean`|
+
+
+  
+  
+  
+  
+  
+  
+  
+  

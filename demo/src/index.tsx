@@ -3,95 +3,27 @@ import ReactDOM from 'react-dom';
 import Marquee from 'react-css-marquee';
 import './styles.css';
 
-const App = (): JSX.Element => {
-  return (
-    <div>
-      <div className="disable-default-wrapper">
-        <Marquee
-          text="REACT CSS MARQUEE"
-          namespace="horizontal-marquee-disable-default"
-          speed={4}
-          direction="right"
-          orientation="horizontal"
-          disableDefaultStyles
-        />
-      </div>
-
-      <div className="vertical-wrapper">
-        <div className="vertical-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="vertical-marquee"
-            speed={5}
-            size={5}
-            direction="right"
-            orientation="vertical"
-          />
-        </div>
-        <div className="vertical-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="vertical-marquee"
-            speed={2}
-            size={10}
-            direction="right"
-            orientation="vertical"
-          />
-        </div>
-        <div className="vertical-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="vertical-marquee"
-            speed={1}
-            size={1}
-            direction="right"
-            orientation="vertical"
-          />
-        </div>
-      </div>
-      <div className="horizontal-wrapper">
-        <div className="horizontal-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="horizontal-marquee"
-            speed={2}
-            size={12}
-            direction="right"
-            orientation="horizontal"
-          />
-        </div>
-        <div className="horizontal-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="horizontal-marquee"
-            speed={7}
-            size={2}
-            direction="right"
-            orientation="horizontal"
-          />
-        </div>
-        <div className="horizontal-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="horizontal-marquee"
-            speed={10}
-            size={10}
-            direction="right"
-            orientation="horizontal"
-          />
-        </div>
-        <div className="horizontal-marquee">
-          <Marquee
-            text="REACT CSS MARQUEE"
-            namespace="horizontal-marquee"
-            speed={5}
-            size={5}
-            direction="right"
-            orientation="horizontal"
-          />
-        </div>
-      </div>
+const App = (): JSX.Element => (
+  <main>
+    <div className="container">
+      <Marquee vertical cssNamespace="vertical" text="Vertical" size={4} />
+      <Marquee
+        flip
+        reverse
+        vertical
+        cssNamespace="vertical-reverse"
+        text="Vertical reverse flip text"
+        size={4}
+      />
+      <Marquee cssNamespace="horizontal" text="Horizontal" />
+      <Marquee cssNamespace="reverse" text="Reverse" reverse />
+      <Marquee cssNamespace="hover-stop" text="Hover to stop" hoverStop />
+      <Marquee cssNamespace="faster" text="Faster" speed={6} />
+      <Marquee cssNamespace="very-fast" text="Very fast" speed={12} />
+      <Marquee cssNamespace="spaced" text="Spaced" spacing={40} />
+      <Marquee cssNamespace="slow" text="Slow" speed={2} />
     </div>
-  );
-};
+  </main>
+);
+
 ReactDOM.render(<App />, document.getElementById('root'));

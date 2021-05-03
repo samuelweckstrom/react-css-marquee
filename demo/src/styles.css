@@ -1,43 +1,142 @@
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
 body {
   margin: 0;
   width: 100vw;
   height: 100vh;
 }
 
-.horizontal-wrapper,
-.vertical-wrapper {
+main {
   height: 100vh;
-  width: 100vw;
+  position: relative;
   display: flex;
+  flex-flow: column;
 }
 
-.vertical-wrapper {
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items: center;
-}
-.horizontal-wrapper {
-  flex-flow: column nowrap;
-  justify-content: space-around;
-}
-
-.horizontal-marquee {
+.container {
+  position: relative;
+  z-index: 999;
   width: 100%;
-}
-
-.vertical-marquee {
-  align-self: center;
-  margin: auto;
-  width: 25%;
   height: 100%;
 }
 
-.disable-default-wrapper {
-  height: auto;
-  width: 90%;
-  margin: 0 auto;
+.vertical-reverse__wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 4rem;
+  display: flex;
+  margin: auto;
+  background-color: coral;
+  z-index: 1;
 }
 
-.horizontal-marquee-disable-default__text {
-  font-size: 2em;
+.vertical-reverse__text {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 3.2rem;
+  color: white;
+}
+
+.vertical__wrapper {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 4rem;
+  padding: 0.5rem 0;
+  background-color: coral;
+}
+
+.vertical__text {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 3.2rem;
+  color: cornsilk;
+  font-family: Helvetica;
+  font-weight: 700;
+}
+
+.horizontal__text {
+  color: dodgerblue;
+  font-family: Helvetica;
+  font-weight: 400;
+}
+
+.reverse__text {
+  font-size: 8rem;
+  color: darkorange;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 400;
+}
+
+.reverse__container {
+  font-size: 4rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 400;
+  padding: 1rem 0;
+}
+
+
+.hover-stop__container { 
+  background-color: dodgerblue;
+  padding: 1rem 0;
+}
+
+.hover-stop__text {
+  font-size: 3rem;
+  color: white;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 400;
+  user-select: none;
+}
+
+.faster__container {
+  background-color: darkorange;
+  padding: 0.5rem 0;
+}
+
+.faster__text {
+  font-size: 4rem;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 400;
+}
+
+.very-fast__container {
+  background-color: indianred;
+  padding: 0.5rem 0;
+}
+
+.very-fast__text {
+  font-size: 5rem;
+  color: white;
+  font-family: Helvetica;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.spaced__container {
+  padding: 5rem 0;
+}
+
+.spaced__text {
+  font-size: 4rem;
+  color: darkorange;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+.slow__container {
+  background-color: cornflowerblue;
+  padding: 1rem 0;
+}
+
+.slow__text {
+  color: cornsilk;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 400;
 }
