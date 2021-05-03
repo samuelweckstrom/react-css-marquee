@@ -3,5 +3,6 @@ node_modules
 .vscode
 yarn-error.log
 .env
-.cache
+demo/.cache
 .history
+demo/dist
