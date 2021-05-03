@@ -1,7 +1,7 @@
 {
   "name": "react-css-marquee",
-  "description": "The classic <marquee> in React and CSS",
-  "version": "0.0.11",
+  "description": "Scrolling text / marquee component for React",
+  "version": "0.0.13",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "url": "https://github.com/samuelweckstrom/react-css-marquee",
@@ -14,9 +14,11 @@
     "marquee",
     "ticker",
     "scroller",
+    "scrolling",
+    "scrolling text",
+    "banner",
     "react",
-    "css",
-    "keyframe"
+    "css"
   ],
   "files": [
     "dist",
