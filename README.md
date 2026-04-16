@@ -4,6 +4,8 @@
 [![npm](https://img.shields.io/npm/v/react-css-marquee)](https://www.npmjs.com/package/react-css-marquee)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/react-css-marquee)](https://bundlephobia.com/package/react-css-marquee)
 
+**[Live demo →](https://samuel.weckstrom.dev/react-css-marquee)**
+
 A lightweight React marquee component powered by CSS animations. Supports horizontal and vertical scrolling, gradient fade edges, pause controls, auto-fill, loop count, and more -- with zero dependencies.
 
 ## Install
