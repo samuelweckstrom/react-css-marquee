@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "declaration": true,
     "outDir": "./dist",
-    "lib": ["es2020", "DOM"]
+    "lib": ["es2020", "DOM"],
+    "types": ["react", "jest", "@testing-library/jest-dom"]
   },
   "include": [
     "react-css-marquee/src/**/*",
