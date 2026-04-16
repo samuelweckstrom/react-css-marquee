@@ -1,187 +1,304 @@
-import React from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 
-const createHash = () => `${Math.random().toString(36).substring(7)}`;
-
-export const useWindowSize = (): { [T: string]: number } => {
-  const getSize = (): { [T: string]: number } => ({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-  const [windowSize, setWindowSize] = React.useState(getSize);
-  React.useLayoutEffect(() => {
-    const onResize = () => setWindowSize(getSize);
-    window.addEventListener('resize', onResize);
-    return (): void => window.removeEventListener('resize', onResize);
-  }, []);
-  return windowSize;
-};
-
-const DIRECTION = {
-  LEFT: 'left',
-  REVERSE: 'reverse',
-} as const;
-
-const ORIENTATION = {
-  RIGHT_TOP: 'right top',
-  TOP_LEFT: 'top left',
-  LEFT_TOP: 'left top',
-} as const;
-
-type MarqueeProps = {
-  text: string;
-  cssNamespace?: string;
-  flip?: boolean;
-  hoverStop?: boolean;
+export type MarqueeProps = {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  direction?: 'horizontal' | 'vertical';
+  draggable?: boolean;
+  repeat?: boolean;
+  gap?: number;
+  gradient?: boolean;
+  gradientWidth?: number | string;
+  isPaused?: boolean;
+  isPausedOnClick?: boolean;
+  isPausedOnHover?: boolean;
+  isPausedOnMouseDown?: boolean;
+  loop?: number;
+  onCycleComplete?: () => void;
+  onFinish?: () => void;
   reverse?: boolean;
-  size?: number;
-  spacing?: number;
   speed?: number;
-  vertical?: boolean;
+  style?: CSSProperties;
 };
 
-const Marquee = (props: MarqueeProps): JSX.Element => {
-  const [height, setHeight] = React.useState<number>(0);
-  const [width, setWidth] = React.useState<number>(0);
-  const [isMouseOver, setIsMouseOver] = React.useState<boolean>(false);
-  const hash: string = React.useMemo(createHash, []);
-  const windowSize = useWindowSize();
-  const ref = React.useCallback(
-    (node) => {
-      if (node) {
-        const parentHeight = parseInt(
-          window.getComputedStyle(node.parentNode).height.slice(0, -2)
-        );
-        const parentWidth = parseInt(
-          window.getComputedStyle(node.parentNode).width.slice(0, -2)
-        );
-        const size = parseInt(
-          window.getComputedStyle(node).fontSize.slice(0, -2)
-        );
-        setHeight(parentHeight);
-        setWidth(parentWidth);
-      }
-    },
-    [windowSize]
-  );
+let instanceCounter = 0;
 
-  const SPEED: number = props.speed || 5;
-  const CSS_NAMESPACE: string = props.cssNamespace || 'react-css-marquee';
-  const ANIMATION_DIRECTION: string = props.reverse
-    ? DIRECTION.REVERSE
-    : DIRECTION.LEFT;
-  const ROTATION: string =
-    props.vertical && !props.flip
-      ? 'rotate(90deg)'
-      : props.vertical && props.flip
-      ? 'rotate(-90deg)'
-      : 'rotate(0deg)';
-  const MAX_DURATION: number = 10;
-  const ANIMATION_DURATION: number =
-    (props.vertical ? height : width) / SPEED / MAX_DURATION;
-  const CONTAINER_ALIGN: string =
-    props.vertical && !props.flip
-      ? 'translateX(5%)'
-      : props.vertical && props.flip
-      ? `translateX(-${height}px)`
-      : 'translateX(0)';
-  const TRANSFORM_ORIGIN: string =
-    props.vertical && !props.flip
-      ? ''
-      : props.vertical && props.flip
-      ? ORIENTATION.TOP_LEFT
-      : '';
-  const ITEM_WIDTH: string = props.vertical ? `${height}px` : `${width}px`;
-  const ITEM_HEIGHT: string = 'auto';
-  const SPACING: number = props.spacing || 4;
-  const TEXT = props.text || 'REACT CSS MARQUEE';
-  const marqueeText: string = `${TEXT}${' '.repeat(SPACING)}`.repeat(
-    (props.vertical ? height : width) / (SPACING + TEXT.length) / 6
-  );
-  const handleMouseOver = (event: React.MouseEvent): void => {
-    if (props.hoverStop) {
-      const isMouseEnter = event.type === 'mouseenter';
-      setIsMouseOver(isMouseEnter);
+export const Marquee = ({
+  children,
+  className,
+  delay = 0,
+  direction = 'horizontal',
+  draggable = false,
+  repeat = true,
+  gap = 40,
+  gradient = false,
+  gradientWidth = 200,
+  isPaused = false,
+  isPausedOnClick = false,
+  isPausedOnHover = false,
+  isPausedOnMouseDown = false,
+  loop = 0,
+  onCycleComplete,
+  onFinish,
+  reverse = false,
+  speed = 10,
+  style: userStyle,
+}: MarqueeProps) => {
+  const [uid] = useState(() => `rcm${++instanceCounter}`);
+  const horiz = direction === 'horizontal';
+  const containerRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [sizes, setSizes] = useState({ container: 0, group: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [clickPaused, setClickPaused] = useState(false);
+  const [touchHoverPaused, setTouchHoverPaused] = useState(false);
+  const scrubRef = useRef(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const group = groupRef.current;
+    if (!container || !group) return;
+
+    const ro = new ResizeObserver((entries) => {
+      setSizes((prev) => {
+        let next = prev;
+        for (const entry of entries) {
+          const s = horiz
+            ? entry.contentRect.width
+            : entry.contentRect.height;
+          if (entry.target === container) next = { ...next, container: s };
+          if (entry.target === group) next = { ...next, group: s };
+        }
+        return next;
+      });
+    });
+    ro.observe(container);
+    ro.observe(group);
+    return () => ro.disconnect();
+  }, [horiz]);
+
+  // On touch devices :hover is unreliable, so mirror isPausedOnHover via
+  // pointer events (pointerenter/pointerleave fire for both mouse and touch).
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !isPausedOnHover) return;
+
+    const onEnter = (e: PointerEvent) => {
+      if (e.pointerType !== 'touch') return;
+      setTouchHoverPaused(true);
+    };
+    const onLeave = (e: PointerEvent) => {
+      if (e.pointerType !== 'touch') return;
+      setTouchHoverPaused(false);
+    };
+
+    container.addEventListener('pointerenter', onEnter);
+    container.addEventListener('pointerleave', onLeave);
+    return () => {
+      container.removeEventListener('pointerenter', onEnter);
+      container.removeEventListener('pointerleave', onLeave);
+    };
+  }, [isPausedOnHover]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || (!onCycleComplete && !onFinish)) return;
+
+    const onIteration = onCycleComplete
+      ? () => onCycleComplete()
+      : undefined;
+    const onEnd = onFinish ? () => onFinish() : undefined;
+
+    if (onIteration) track.addEventListener('animationiteration', onIteration);
+    if (onEnd) track.addEventListener('animationend', onEnd);
+    return () => {
+      if (onIteration)
+        track.removeEventListener('animationiteration', onIteration);
+      if (onEnd) track.removeEventListener('animationend', onEnd);
+    };
+  }, [onCycleComplete, onFinish]);
+
+  const totalDistance = repeat
+    ? sizes.group + gap
+    : sizes.container + sizes.group;
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    if (!draggable && !isPausedOnClick) return;
+
+    let dragging = false;
+    let startPos = 0;
+    let startScrub = 0;
+    let wasDragged = false;
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (!draggable) return;
+      dragging = true;
+      wasDragged = false;
+      startPos = horiz ? e.clientX : e.clientY;
+      startScrub = scrubRef.current;
+      container.setPointerCapture(e.pointerId);
+      setIsDragging(true);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (!dragging || totalDistance <= 0) return;
+      const pos = horiz ? e.clientX : e.clientY;
+      const delta = pos - startPos;
+      if (Math.abs(delta) > 3) wasDragged = true;
+      const timeDelta = (-delta / totalDistance) * speed;
+      scrubRef.current = startScrub + timeDelta;
+      if (trackRef.current) {
+        trackRef.current.style.animationDelay = `${delay - scrubRef.current}s`;
+      }
+    };
+
+    const onPointerUp = () => {
+      if (!dragging) return;
+      dragging = false;
+      setIsDragging(false);
+    };
+
+    const onClick = () => {
+      if (wasDragged) {
+        wasDragged = false;
+        return;
+      }
+      if (isPausedOnClick) setClickPaused((p) => !p);
+    };
+
+    container.addEventListener('pointerdown', onPointerDown);
+    container.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointerup', onPointerUp);
+    container.addEventListener('pointercancel', onPointerUp);
+    container.addEventListener('click', onClick);
+
+    return () => {
+      container.removeEventListener('pointerdown', onPointerDown);
+      container.removeEventListener('pointermove', onPointerMove);
+      container.removeEventListener('pointerup', onPointerUp);
+      container.removeEventListener('pointercancel', onPointerUp);
+      container.removeEventListener('click', onClick);
+    };
+  }, [draggable, isPausedOnClick, horiz, totalDistance, speed, delay]);
+
+  const copies =
+    repeat && sizes.group > 0
+      ? Math.ceil(sizes.container / sizes.group) + 1
+      : 1;
+  const active = sizes.group > 0 && sizes.container > 0;
+  const paused = isPaused || (isPausedOnClick && clickPaused) || isDragging || touchHoverPaused;
+
+  const css = useMemo(() => {
+    let s: string;
+    if (repeat) {
+      const dist = sizes.group + gap;
+      const dx = horiz ? `-${dist}px` : '0';
+      const dy = horiz ? '0' : `-${dist}px`;
+      s = `@keyframes ${uid}{to{transform:translate(${dx},${dy})}}`;
+    } else {
+      const fromVal = `${sizes.container}px`;
+      const toVal = `-${sizes.group}px`;
+      const fromX = horiz ? fromVal : '0';
+      const fromY = horiz ? '0' : fromVal;
+      const toX = horiz ? toVal : '0';
+      const toY = horiz ? '0' : toVal;
+      s = `@keyframes ${uid}{from{transform:translate(${fromX},${fromY})}to{transform:translate(${toX},${toY})}}`;
     }
-  };
+    if (isPausedOnHover) {
+      s += `[data-rcm="${uid}"]:hover [data-rcm-t]{animation-play-state:paused!important}`;
+    }
+    if (isPausedOnMouseDown) {
+      s += `[data-rcm="${uid}"]:active [data-rcm-t]{animation-play-state:paused!important}`;
+    }
+    s += `@media(prefers-reduced-motion:reduce){[data-rcm="${uid}"] [data-rcm-t]{animation-play-state:paused!important}}`;
+    return s;
+  }, [uid, isPausedOnHover, isPausedOnMouseDown, sizes, gap, horiz, repeat]);
+
+  const gapStyle = `${gap}px`;
+
+  const gwPx =
+    typeof gradientWidth === 'number' ? `${gradientWidth}px` : gradientWidth;
+  const maskDir = horiz ? 'to right' : 'to bottom';
+  const mask = gradient
+    ? `linear-gradient(${maskDir}, transparent, black ${gwPx}, black calc(100% - ${gwPx}), transparent)`
+    : undefined;
+
+  const animDelay = delay - scrubRef.current;
 
   return (
-    <>
-      <style>
-        {`
-            @keyframes ${CSS_NAMESPACE}__animation-${hash} {
-              0% {
-                transform: translateX(0%);
-              }
-              100% {
-                transform: translateX(-100%);
-              }
+    <div
+      ref={containerRef}
+      data-rcm={uid}
+      className={className}
+      style={{
+        overflow: 'hidden',
+        width: '100%',
+        height: '100%',
+        ...(mask ? { maskImage: mask, WebkitMaskImage: mask } : undefined),
+        ...(draggable
+          ? {
+              cursor: isDragging ? 'grabbing' : 'grab',
+              userSelect: 'none' as const,
+              // Allow scrolling in the perpendicular axis so the page
+              // remains scrollable when the marquee is draggable.
+              touchAction: (horiz ? 'pan-y' : 'pan-x') as CSSProperties['touchAction'],
             }
-
-            .${CSS_NAMESPACE}__wrapper-${hash} { 
-              box-sizing: border-box;
-              user-select: none;
-            }
-
-            .${CSS_NAMESPACE}__rotation-${hash} {
-              transform: ${ROTATION} ${CONTAINER_ALIGN};
-              transform-origin: ${TRANSFORM_ORIGIN};
-              will-change: transform;
-              pointer-events: none;
-            }
-
-            .${CSS_NAMESPACE}__container-${hash} {
-              height: ${ITEM_HEIGHT};
-              width: ${ITEM_WIDTH};
-              display: flex;
-              flex-flow: row nowrap;
-              backface-visibility: hidden;
-              perspective: 1000px;
-              overflow: hidden;
-              font-size: 16px;
-              pointer-events: none;            
-            }
-
-            .${CSS_NAMESPACE}__text-${hash} {
-              align-self: center;
-              text-rendering: optimizeLegibility;
-              transform: translateZ(0);
-              animation-name: ${CSS_NAMESPACE}__animation-${hash};
-              animation-timing-function: linear;
-              animation-iteration-count: infinite;
-              animation-direction: ${ANIMATION_DIRECTION};
-              animation-duration: ${ANIMATION_DURATION}s;
-              animation-play-state: ${isMouseOver ? 'paused' : 'initial'};
-              white-space: pre;
-              will-change: transform;
-              pointer-events: none;
-            }
-          `}
-      </style>
+          : isPausedOnClick
+            ? { cursor: 'pointer' }
+            : undefined),
+        ...userStyle,
+      }}
+    >
+      <style>{css}</style>
       <div
-        ref={ref}
-        onMouseEnter={handleMouseOver}
-        onMouseOut={handleMouseOver}
-        className={`${CSS_NAMESPACE}__wrapper-${hash} ${CSS_NAMESPACE}__wrapper`}
+        ref={trackRef}
+        data-rcm-t=""
+        style={
+          {
+            display: 'flex',
+            flexDirection: horiz ? 'row' : 'column',
+            alignItems: 'center',
+            width: horiz ? 'max-content' : '100%',
+            height: horiz ? '100%' : 'max-content',
+            gap: gapStyle,
+            animation: active
+              ? `${uid} ${speed}s linear ${loop === 0 ? 'infinite' : loop}`
+              : 'none',
+            animationPlayState: paused ? 'paused' : 'running',
+            animationDirection: reverse ? 'reverse' : 'normal',
+            animationDelay: animDelay ? `${animDelay}s` : undefined,
+            willChange: active ? 'transform' : undefined,
+          } as CSSProperties
+        }
       >
-        <div className={`${CSS_NAMESPACE}__rotation-${hash}`}>
+        {Array.from({ length: copies }, (_, i) => (
           <div
-            className={`${CSS_NAMESPACE}__container-${hash} ${CSS_NAMESPACE}__container`}
+            key={i}
+            ref={i === 0 ? groupRef : undefined}
+            aria-hidden={i > 0 || undefined}
+            style={{
+              display: 'flex',
+              flexDirection: horiz ? 'row' : 'column',
+              alignItems: 'center',
+              flexShrink: 0,
+              gap: gapStyle,
+            }}
           >
-            <div
-              className={`${CSS_NAMESPACE}__text-${hash} ${CSS_NAMESPACE}__text`}
-            >
-              {marqueeText}
-            </div>
-            <div
-              className={`${CSS_NAMESPACE}__text-${hash} ${CSS_NAMESPACE}__text`}
-            >
-              {marqueeText}
-            </div>
+            {children}
           </div>
-        </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
-
-export default Marquee;
