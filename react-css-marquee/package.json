@@ -1,7 +1,7 @@
 {
   "name": "react-css-marquee",
   "description": "Lightweight React marquee component powered by CSS animations. Horizontal and vertical scrolling, gradient fade, pause on hover/click, auto-fill, and more.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "url": "https://github.com/samuelweckstrom/react-css-marquee",
