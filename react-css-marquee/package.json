@@ -1,7 +1,7 @@
 {
   "name": "react-css-marquee",
-  "description": "Scrolling text / marquee component for React",
-  "version": "0.0.13",
+  "description": "Lightweight React marquee component powered by CSS animations. Horizontal and vertical scrolling, gradient fade, pause on hover/click, auto-fill, and more.",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "url": "https://github.com/samuelweckstrom/react-css-marquee",
@@ -11,25 +11,45 @@
   },
   "license": "MIT",
   "keywords": [
-    "marquee",
-    "ticker",
-    "scroller",
-    "scrolling",
-    "scrolling text",
-    "banner",
     "react",
-    "css"
+    "marquee",
+    "react-marquee",
+    "scroll",
+    "scrolling",
+    "infinite-scroll",
+    "ticker",
+    "news-ticker",
+    "scroller",
+    "horizontal-scroll",
+    "vertical-scroll",
+    "auto-scroll",
+    "css-animation",
+    "banner",
+    "carousel",
+    "react-component",
+    "typescript",
+    "gradient",
+    "pause-on-hover",
+    "infinite-loop",
+    "lightweight"
   ],
   "files": [
     "dist",
     "README.md"
   ],
   "scripts": {
-    "start": "tsc -w",
-    "build": "tsc -b"
+    "dev": "tsup --watch",
+    "build": "tsup"
   },
   "peerDependencies": {
-    "react": "^16.8",
-    "react-dom": "^16.8"
+    "react": "^16.8 || ^17 || ^18 || ^19"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   }
 }

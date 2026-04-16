@@ -1,0 +1,108 @@
+# react-css-marquee
+
+> Lightweight, zero-dependency React marquee component powered by CSS animations.
+
+Install: `npm install react-css-marquee`  
+Import: `import { Marquee } from 'react-css-marquee'`  
+Peer deps: React ≥ 16.8
+
+## What it does
+
+Renders children inside a continuously scrolling track. By default children are duplicated enough times to fill the viewport for a seamless infinite loop (`repeat={true}`). Setting `repeat={false}` produces a "breaking news" ticker where each item scrolls across once and stops.
+
+Uses a single CSS `@keyframes` animation injected via an inline `<style>` tag — no JS animation loop, no requestAnimationFrame, no external CSS file needed.
+
+## Key API
+
+| Prop | Type | Default | Notes |
+|------|------|---------|-------|
+| `children` | `ReactNode` | — | Content to scroll |
+| `direction` | `'horizontal' \| 'vertical'` | `'horizontal'` | Vertical marquees need a fixed height via `style` |
+| `speed` | `number` | `10` | CSS `animation-duration` in seconds — **higher = slower** |
+| `gap` | `number` | `40` | Gap between items in pixels |
+| `repeat` | `boolean` | `true` | `false` = ticker mode, items scroll across once |
+| `reverse` | `boolean` | `false` | Flip scroll direction |
+| `loop` | `number` | `0` | Cycle count; `0` = infinite |
+| `delay` | `number` | `0` | Seconds before animation starts |
+| `gradient` | `boolean` | `false` | Fade edges with CSS `mask-image` (works over any background) |
+| `gradientWidth` | `number \| string` | `200` | Fade zone width; number = px, string = any CSS unit |
+| `isPaused` | `boolean` | `false` | Pause programmatically |
+| `isPausedOnHover` | `boolean` | `false` | Pause on pointer hover (mouse + touch) |
+| `isPausedOnClick` | `boolean` | `false` | Click to toggle pause |
+| `isPausedOnMouseDown` | `boolean` | `false` | Pause while mouse/touch held down |
+| `draggable` | `boolean` | `false` | Drag to scrub; animation resumes from dragged position |
+| `onCycleComplete` | `() => void` | — | Fired on each completed cycle |
+| `onFinish` | `() => void` | — | Fired when a finite `loop` finishes |
+| `className` | `string` | — | CSS class for outer container |
+| `style` | `CSSProperties` | — | Inline styles for outer container |
+
+## Usage examples
+
+### Basic logo strip
+```tsx
+<Marquee gap={32} speed={15}>
+  <img src="logo-a.svg" />
+  <img src="logo-b.svg" />
+  <img src="logo-c.svg" />
+</Marquee>
+```
+
+### Vertical feed, gradient edges, pause on hover
+```tsx
+<Marquee direction="vertical" gradient gradientWidth={80} isPausedOnHover style={{ height: 400 }}>
+  <Card title="Item 1" />
+  <Card title="Item 2" />
+</Marquee>
+```
+
+### Ticker — scroll once, no repeat
+```tsx
+<Marquee repeat={false} speed={8}>
+  <h2>Breaking: major update shipped</h2>
+</Marquee>
+```
+
+### Reverse direction
+```tsx
+<Marquee reverse speed={12}>
+  <span>Scrolls right-to-left... wait, left-to-right</span>
+</Marquee>
+```
+
+### Finite loop with callback
+```tsx
+<Marquee loop={3} onFinish={() => setDone(true)}>
+  <span>Plays exactly three times</span>
+</Marquee>
+```
+
+### Draggable photo strip
+```tsx
+<Marquee draggable gap={16}>
+  <img src="photo1.jpg" />
+  <img src="photo2.jpg" />
+</Marquee>
+```
+
+### Pause from outside the component
+```tsx
+const [paused, setPaused] = useState(false);
+<button onClick={() => setPaused(p => !p)}>Toggle</button>
+<Marquee isPaused={paused}>
+  <span>Controlled pause</span>
+</Marquee>
+```
+
+## Accessibility
+
+- Automatically pauses when `prefers-reduced-motion: reduce` is set.
+- Duplicate copies rendered for seamless looping are marked `aria-hidden` so screen readers only see the content once.
+
+## Notes for code generation
+
+- Always wrap children in the `<Marquee>` component — do **not** try to recreate the animation with custom CSS.
+- For vertical marquees, `style={{ height: '...' }}` is required on the component or a parent; it does not have an implicit height.
+- `speed` is a **duration**, not a velocity — doubling the value halves the speed.
+- `loop={0}` (the default) means infinite; any positive integer is an exact cycle count.
+- `gradient` uses `mask-image`, not a colour overlay, so it works on any background without knowing the background colour.
+- The component is SSR-safe; it measures itself via `ResizeObserver` after mount.

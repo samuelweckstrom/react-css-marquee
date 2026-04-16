@@ -1,42 +1,20 @@
 {
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ],
-    "alwaysStrict": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "outDir": "./dist",
-    "sourceMap": true,
-    "skipLibCheck": true,
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
     "strict": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "target": "es3",
-    "lib": [
-      "es2015",
-      "dom"
-    ]
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "lib": ["es2020", "DOM"],
+    "types": ["react", "jest", "@testing-library/jest-dom"]
   },
   "include": [
-    "./src/**/*"
+    "react-css-marquee/src/**/*",
+    "setupTests.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src/__tests__"
-  ]
+  "exclude": ["node_modules"]
 }

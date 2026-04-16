@@ -1,8 +1,11 @@
 node_modules
 .DS_Store
 .vscode
-yarn-error.log
 .env
-demo/.cache
 .history
+demo/.cache
 demo/dist
+react-css-marquee/dist
+*.log
+package-lock.json
+yarn.lock
