@@ -1,6 +1,5 @@
-module.exports = {
+export default {
   testEnvironment: 'jsdom',
-  rootDir: __dirname,
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
   transform: {
     '^.+\\.tsx?$': [
