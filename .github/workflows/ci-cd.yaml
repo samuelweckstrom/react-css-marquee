@@ -3,6 +3,7 @@ name: CI/CD
 on:
   push:
     branches: ["**"]
+  workflow_dispatch:
 
 jobs:
   # ── Test ─────────────────────────────────────────────────────────────────
@@ -48,14 +49,14 @@ jobs:
 
       # Upload artifact for GitHub Pages deployment
       - name: Upload Pages artifact
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v3
         with:
           path: demo/dist
 
       # Upload artifact for S3 deployment
       - name: Upload demo dist artifact
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: demo-dist
@@ -63,7 +64,7 @@ jobs:
 
   # ── Deploy → GitHub Pages ─────────────────────────────────────────────────
   deploy-pages:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -78,7 +79,7 @@ jobs:
 
   # ── Deploy → S3 + CloudFront ──────────────────────────────────────────────
   deploy-s3:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     steps:
